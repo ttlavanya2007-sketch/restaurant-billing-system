@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Bill</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- ================= TOP BAR ================= -->
+
+    <div class="top-bar">
+
+        <div class="heading">
+
+            <h1>
+
+                <i class="fa-solid fa-receipt"></i>
+
+                BILL
+
+            </h1>
+
+        </div>
+
+        <div class="nav-buttons">
+
+            <a href="/menu">Menu</a>
+
+            <a href="/customers">Customers</a>
+
+            <a href="/order">Orders</a>
+
+            <a href="/bill" class="active">Billing</a>
+
+            <a href="/reports">Reports</a>
+
+        </div>
+
+    </div>
+
+    <!-- ================= BILL CARD ================= -->
+
+    <div class="card bill-card">
+
+        <div class="bill-date">
+
+            <span>
+
+                <strong>Date :</strong>
+
+                {{ current_date }}
+
+            </span>
+
+            <span>
+
+                <strong>Time :</strong>
+
+                {{ current_time }}
+
+            </span>
+
+        </div>
+
+        <div class="customer-box">
+
+            <h3>
+
+                Customer Name
+
+            </h3>
+
+            <input
+               type="text"
+               value="{{ customer_name }}"
+               readonly>
+
+        </div>
+
+        <table class="bill-table">
+
+            <thead>
+
+                <tr>
+
+                    <th>#</th>
+                    <th>Food Name</th>
+                    <th>Price</th>
+                    <th>Qty</th>
+                    <th>Total</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for order in orders %}
+
+                <tr>
+
+                    <td>{{ loop.index }}</td>
+
+                    <td>{{ order.food_name }}</td>
+
+                    <td>₹ {{ order.price }}</td>
+
+                    <td>{{ order.quantity }}</td>
+
+                    <td>₹ {{ order.price * order.quantity }}</td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+        <div class="grand-total">
+
+            <h2>
+
+                Grand Total :
+                ₹ {{ grand_total }}
+
+            </h2>
+
+        </div>
+
+        <div class="bill-quote">
+
+            <p>
+
+                "Thank you for choosing us.
+                We hope to serve you again."
+
+            </p>
+
+        </div>
+
+        <div class="bill-buttons">
+
+            <button
+                class="save-btn"
+                onclick="window.print()">
+
+                <i class="fa-solid fa-print"></i>
+
+                Print Bill
+
+            </button>
+
+            <button
+                class="clear-btn"
+                onclick="location.href='/finish_bill'">
+
+                <i class="fa-solid fa-check"></i>
+
+                Finish Bill
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>
