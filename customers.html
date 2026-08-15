@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Customers</title>
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='css/style.css') }}">
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+</head>
+
+<body class="container">
+<div class="top-bar">
+   
+
+    <div class="heading">
+
+        <h1>
+
+            <i class="fa-solid fa-users"></i>
+
+            Customers
+
+        </h1>
+
+        <p>
+
+            Manage your customers and their order history 🌿
+
+        </p>
+
+    </div>
+
+    <div class="nav-buttons">
+
+        <a href="/menu">Menu</a>
+
+        <a href="/customers" class="active">Customers</a>
+
+        <a href="/order">Orders</a>
+
+        <a href="/bill">Billing</a>
+
+        <a href="/reports">Reports</a>
+
+    </div>
+
+</div>
+
+<div class="customer-page">
+
+<div class="customer-header" >
+
+
+
+<input
+type="text"
+id="searchInput"
+placeholder="Search Customer...">
+
+</div>
+
+<div class="customer-cards">
+
+<div class="card">
+<h3>Total Customers</h3>
+<h1>{{ customers|length }}</h1>
+</div>
+
+<div class="card">
+<h3>Repeat Customers</h3>
+<h1>0</h1>
+</div>
+
+<div class="card">
+<h3>Total Revenue</h3>
+<h1>₹0</h1>
+</div>
+
+</div>
+
+<div class="table-box">
+
+<table id="customerTable">
+
+<thead>
+
+<tr>
+
+<th>#</th>
+
+<th>Name</th>
+
+<th>Phone</th>
+
+<th>Orders</th>
+
+<th>Total Spent</th>
+
+<th>Last Visit</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for customer in customers %}
+
+<tr>
+
+<td>{{ loop.index }}</td>
+
+<td>{{ customer.customer_name }}</td>
+
+<td>{{ customer.phone }}</td>
+
+<td>{{ customer.total_orders }}</td>
+
+<td>₹{{ customer.total_spent }}</td>
+
+<td>{{ customer.last_visit }}</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+const search =
+document.getElementById("searchInput");
+
+search.addEventListener("keyup",function(){
+
+let filter =
+this.value.toLowerCase();
+
+let rows =
+document.querySelectorAll("#customerTable tbody tr");
+
+rows.forEach(function(row){
+
+let text =
+row.innerText.toLowerCase();
+
+row.style.display =
+text.includes(filter) ? "" : "none";
+
+});
+
+});
+
+</script>
+
+</body>
+
+</html>
