@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu Management</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- ===== Top Header ===== -->
+
+    <div class="top-bar">
+
+        <div class="heading">
+            <h1>🍽 Menu Management</h1>
+            <p>Manage food items and prices.</p>
+        </div>
+
+        <div class="nav-buttons">
+            <a href="/menu">Menu</a>
+            <a href="/customers">Customers</a>
+            <a href="/order">Orders</a>
+            <a href="/bill">Billing</a>
+            <a href="/reports">Reports</a>
+        </div>
+
+    </div>
+
+    <!-- ===== Add Item Card ===== -->
+
+    <div class="card">
+
+        <h2>Add Menu Item</h2>
+
+        <form action="/add_menu" method="POST">
+
+            <div class="form-row">
+
+                <input type="text"
+                       name="item_name"
+                       placeholder="Food Name"
+                       required>
+
+                <input type="text"
+                       name="category"
+                       placeholder="Category"
+                       required>
+                    <datalist id="category-list">
+                    <option value="Starter">
+                    <option value="Main Course">
+                    <option value="Fast Food">
+                    <option value="Dessert">
+                    <option value="Drinks">
+                    <option value="Beverages">
+                    <option value="Ice Cream">
+
+                </datalist>
+
+                <input type="number"
+                       name="price"
+                       placeholder="Price"
+                       required>
+
+                <button type="submit">
+                    <i class="fa-solid fa-plus"></i>
+                    Add Item
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+    <!-- ===== Table ===== -->
+
+    <div class="card">
+
+        <h2>Menu Items</h2>
+
+        <table>
+
+            <thead>
+
+                <tr>
+                    <th>ID</th>
+                    <th>Food Name</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>Action</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for item in menu %}
+
+                <tr>
+
+                    <td>{{ item.id }}</td>
+                    <td>{{ item.item_name }}</td>
+                    <td>{{ item.category }}</td>
+                    <td>₹ {{ item.price }}</td>
+
+                    <td>
+
+                        <a href="/delete_menu/{{ item.id }}">
+
+                            <i class="fa-solid fa-trash"></i>
+
+                        </a>
+
+                    </td>
+
+                </tr>
+
+                {% else %}
+
+                <tr>
+
+                    <td colspan="5">
+                        No Menu Items Found
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>
