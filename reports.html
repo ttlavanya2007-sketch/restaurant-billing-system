@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Reports</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    <!--================ TOP BAR ================-->
+
+    <div class="top-bar">
+
+        <div class="heading">
+
+            <h1>
+                Reports
+            </h1>
+
+            <p>
+                Analyze sales, orders and performance 🌿
+            </p>
+
+        </div>
+
+        <div class="nav-buttons">
+
+            <a href="/menu">Menu</a>
+
+            <a href="/customers">Customers</a>
+
+            <a href="/order">Orders</a>
+
+            <a href="/bill">Billing</a>
+
+            <a href="/reports" class="active">Reports</a>
+
+        </div>
+
+    </div>
+
+    <!--================ FILTER BAR ================-->
+
+    <div class="report-top">
+
+        <div class="date-box">
+
+            <i class="fa-regular fa-calendar"></i>
+
+            <span>
+
+                May 20, 2025 - May 26, 2025
+
+            </span>
+
+        </div>
+
+        <button class="export-btn">
+
+            <i class="fa-solid fa-download"></i>
+
+            Export Report
+
+        </button>
+
+    </div>
+
+    <!--================ SUMMARY CARDS ================-->
+
+    <div class="report-cards">
+
+        <div class="report-card">
+
+            <div class="icon">
+
+                <i class="fa-solid fa-indian-rupee-sign"></i>
+
+            </div>
+
+            <div>
+
+                <h4>Total Sales</h4>
+
+                <h2>₹ {{ total_sales }}</h2>
+
+                <p>▲ Sales Overview</p>
+
+            </div>
+
+        </div>
+
+        <div class="report-card">
+
+            <div class="icon">
+
+                <i class="fa-solid fa-bag-shopping"></i>
+
+            </div>
+
+            <div>
+
+                <h4>Total Orders</h4>
+
+                <h2>{{ total_orders }}</h2>
+
+                <p>Restaurant Orders</p>
+
+            </div>
+
+        </div>
+
+        <div class="report-card">
+
+            <div class="icon">
+
+                <i class="fa-solid fa-users"></i>
+
+            </div>
+
+            <div>
+
+                <h4>Total Customers</h4>
+
+                <h2>{{ total_customers }}</h2>
+
+                <p>Registered Customers</p>
+
+            </div>
+
+        </div>
+
+        <div class="report-card">
+
+            <div class="icon">
+
+                <i class="fa-solid fa-chart-line"></i>
+
+            </div>
+
+            <div>
+
+                <h4>Average Order</h4>
+
+                <h2>₹ {{ average_order }}</h2>
+
+                <p>Average Value</p>
+
+            </div>
+
+        </div>
+
+        <div class="report-card">
+
+            <div class="icon">
+
+                <i class="fa-solid fa-cube"></i>
+
+            </div>
+
+            <div>
+
+                <h4>Total Items</h4>
+
+                <h2>{{ total_items }}</h2>
+
+                <p>Items Sold</p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!--================ CHART SECTION ================-->
+
+    <div class="chart-row">
+
+        <div class="chart-card">
+
+            <h2>
+
+                <i class="fa-solid fa-chart-column"></i>
+
+                Sales Overview
+
+            </h2>
+
+            <canvas id="salesChart"></canvas>
+
+        </div>
+
+        <div class="chart-card">
+
+            <h2>
+
+                <i class="fa-solid fa-chart-pie"></i>
+
+                Sales By Category
+
+            </h2>
+
+            <canvas id="categoryChart"></canvas>
+
+        </div>
+
+    </div>
+
+    <!--================ TOP SELLING ITEMS ================-->
+    <div class="report-bottom">
+
+    <!--================ TOP SELLING ITEMS ================-->
+
+    <div class="table-card">
+
+        <div class="table-header">
+
+            <h2>
+
+                <i class="fa-solid fa-fire"></i>
+
+                Top Selling Items
+
+            </h2>
+
+            <button class="view-btn">
+
+                View All
+
+            </button>
+
+        </div>
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>#</th>
+                    <th>Item Name</th>
+                    <th>Category</th>
+                    <th>Quantity Sold</th>
+                    <th>Revenue (₹)</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for item in top_items %}
+
+                <tr>
+
+                    <td>{{ loop.index }}</td>
+
+                    <td>{{ item.food_name }}</td>
+
+                    <td>Main Course</td>
+
+                    <td>{{ item.total_qty }}</td>
+
+                    <td>₹ {{ item.total_sales }}</td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    <!--================ PAYMENT SUMMARY ================-->
+
+    <div class="table-card">
+
+        <h2>
+
+            <i class="fa-solid fa-wallet"></i>
+
+            Payment Summary
+
+        </h2>
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Payment</th>
+                    <th>Orders</th>
+                    <th>Amount</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                <tr>
+
+                    <td>Cash</td>
+
+                    <td>{{ total_orders }}</td>
+
+                    <td>₹ {{ total_sales }}</td>
+
+                </tr>
+
+                <tr>
+
+                    <td>UPI</td>
+
+                    <td>0</td>
+
+                    <td>₹ 0</td>
+
+                </tr>
+
+                <tr>
+
+                    <td>Card</td>
+
+                    <td>0</td>
+
+                    <td>₹ 0</td>
+
+                </tr>
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+<!--================ REPORT INSIGHT ================-->
+<div class="report-insight">
+
+    <div class="insight-card">
+
+        <h2>
+
+            <i class="fa-solid fa-lightbulb"></i>
+
+            Report Insight
+
+        </h2>
+
+        <div class="insight-box">
+
+            <div class="insight-item">
+
+                <span>Total Revenue</span>
+
+                <strong>₹ {{ total_sales }}</strong>
+
+            </div>
+
+            <div class="insight-item">
+
+                <span>Total Orders</span>
+
+                <strong>{{ total_orders }}</strong>
+
+            </div>
+
+            <div class="insight-item">
+
+                <span>Average Order Value</span>
+
+                <strong>₹ {{ average_order }}</strong>
+
+            </div>
+
+            <div class="insight-item">
+
+                <span>Best Selling Item</span>
+
+                <strong>
+
+                    {% if top_items %}
+
+                        {{ top_items[0].food_name }}
+
+                    {% else %}
+
+                        No Data
+
+                    {% endif %}
+
+                </strong>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</div>
+
+<!--================ CHART JS ================-->
+
+<script>
+
+const salesChart = new Chart(
+    document.getElementById("salesChart"),
+    {
+
+        type: "line",
+
+        data: {
+
+            labels: ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"],
+
+            datasets: [{
+
+                label: "Sales",
+
+                data: [1500,2200,1800,2600,2400,3100,2800],
+
+                borderWidth: 3,
+
+                tension: .4,
+
+                fill: true
+
+            }]
+
+        },
+
+        options: {
+
+            responsive: true,
+
+            plugins: {
+
+                legend: {
+
+                    display: false
+
+                }
+
+            }
+
+        }
+
+    }
+
+);
+
+const categoryChart = new Chart(
+
+    document.getElementById("categoryChart"),
+
+    {
+
+        type: "doughnut",
+
+        data: {
+
+            labels: [
+
+                "Main Course",
+
+                "Snacks",
+
+                "Drinks",
+
+                "Desserts"
+
+            ],
+
+            datasets: [{
+
+                data: [40,25,20,15]
+
+            }]
+
+        },
+
+        options: {
+
+            responsive: true
+
+        }
+
+    }
+
+);
+
+</script>
+
+</body>
+
+</html>
